@@ -1,0 +1,30 @@
+FILE DESCRIPTION :-
+
+File: User List
+Description: The master list of users in the dataset.
+
+-------------------------------------------------------------------------------------
+
+File: Coupon List Train
+Description: The master list of coupons which are considered part of the training set.
+
+-----------------------------------------------------------------------------
+
+File: Coupon Area Train
+Description: Informs us about the the coupons type sold in a particular area.
+
+-----------------------------------------------------------------------------
+
+File: Coupon Detail Train
+Description: The purchase log of users buying coupons during the training set time period.
+
+-----------------------------------------------------------------------------
+
+File: Coupon Visit Train
+Description: The viewing log of users browsing coupons during the training set time period. You are not provided this table for the test set period.
+
+-----------------------------------------------------------------------------
+
+PROCESSING OF THE DATA :-
+
+1) Conversion of japanese to english for easy interpretation of the data
