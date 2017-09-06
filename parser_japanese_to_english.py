@@ -16,7 +16,7 @@ files = {
 
 for file in files: # itirating through every file which needs transformation
 	
-	df = pd.read_csv(file)  # reads the content od the .csv file
+	df = pd.read_csv(file)  # reads the content of the .csv file
 	for entry in range(0,len(df)):  # itiration through all the rows of the current file
 		
 		for columns in files[file]:  # itiration through all the columns that needs to be translated
@@ -24,4 +24,4 @@ for file in files: # itirating through every file which needs transformation
 			df[columns][entry] = conversion_table[col_value] # replaces the japanese text to its corresponding english interpretation
 			
 
-	df.to_csv(file+'_translated_en.csv') # writes the modified dataframe as a new .csv file with 'translated_en' added the original name
+	df.to_csv(file+'_translated_en.csv') # writes the modified dataframe as a new .csv file with 'translated_en' added to the original name
