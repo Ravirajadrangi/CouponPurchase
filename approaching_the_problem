@@ -28,3 +28,20 @@ Description: The viewing log of users browsing coupons during the training set t
 PROCESSING OF THE DATA :-
 
 1) Conversion of japanese to english for easy interpretation of the data
+2) Preprocessing of the data contained in the csv file contains the following steps:
+	a) Coupon Detail Train:
+							i)   We exclude the "Date" column present in the csv file
+	b) Coupon List Train: 
+							i)   We exclude the "CAPSULE_TEXT", "DISPFROM", "DISPEND", "DISPPERIOD" columns present in the cxv file
+							ii)  We find the presence of NaN values in the columns 
+							iii) For USABLE column we replace NaN values with the value 0
+							iv)  For VALIDPERIOD we replace NaN values with the average of the column
+							v)   We sum the total number of the days the column is usable and include it as a column
+							vi)  We remove any other USABLE column from the dataframe since it now becomes redundant 
+	c) User list:
+							i) We include 'SEX_ID','AGE','USER_ID_hash'
+
+
+3) For training of data we join the csv files Coupon Detail Train, Coupon List Train, User List
+
+4) For test of data we join the csv files Coupon Detail Train, Coupon List Test, User List
