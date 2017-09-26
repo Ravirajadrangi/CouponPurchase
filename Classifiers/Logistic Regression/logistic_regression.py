@@ -1,14 +1,14 @@
 import numpy as np
 import pandas as pd
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
 import pickle
 
-
+ 
 # Reading of the training and testing dataset
-train_df = pd.read_csv('../processed_data/train.csv')
+train_df = pd.read_csv('../../../processed_data/train.csv')
 train_df = train_df.drop(train_df.columns[0], axis=1)
-train_df = train_df.drop(['SEX_ID','ITEM_COUNT','PURCHASEID_hash','AGE','COUPON_ID_hash'], axis = 1)       
-test_df = pd.read_csv('../processed_data/test.csv')
+train_df = train_df.drop(['ITEM_COUNT','PURCHASEID_hash','COUPON_ID_hash'], axis = 1)       
+test_df = pd.read_csv('../../../processed_data/test.csv')
 test_df = test_df.drop(test_df.columns[0], axis=1)
 test_df = test_df.drop('COUPON_ID_hash', axis = 1)
 
@@ -40,6 +40,7 @@ for name in genre_name:
 X = train_df.drop('USER_ID_hash', axis = 1)
 Y = train_df['USER_ID_hash']
 
+print 'altering of training data done ...'
 #---------------------------------------------------------------------------------------------------------
 # Altering the testing dataset
 
@@ -58,14 +59,20 @@ for area_name in ken_name:
 # Altering the genre name 
 for name in genre_name:
 	test_df = test_df.replace(to_replace = name, value = genre_name.index(name))
+
+print 'altering of testing data done ...'	
 #---------------------------------------------------------------------------------------------------------
+X = X[1:300]
+Y = Y[1:300]
+LR = LogisticRegression()
+print "fitting the classifier"
+LR.fit(X,Y)
+filename = '../../../Trained_Classifiers/lr.sav'
+pickle.dump(LR, open(filename, 'wb'))
 
 
-DTC = DecisionTreeClassifier(random_state=0)
-DTC.fit(X, Y)
-Predicted_Users = DTC.predict(test_df)
 
-print(Predicted_Users)
+
 
 
 
@@ -73,13 +80,13 @@ print(Predicted_Users)
 
 
 '''
+
 train_column = set(train_df.columns.tolist())
 test_column = set(test_df.columns.tolist())
 print(train_column,test_column)
 
 # Saving the classifier
-filename = 'finalized_model.sav'
-pickle.dump(model, open(filename, 'wb'))
+
 
 # Loading the classifier
 loaded_model = pickle.load(open(filename, 'rb'))

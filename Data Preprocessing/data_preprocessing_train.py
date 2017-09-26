@@ -2,8 +2,8 @@ import pandas as pd
 import numpy as np
 
 # Reading the csv files for extracting features
-coupon_detail_train = pd.read_csv("../dataset/coupon_detail_train.csv")
-coupon_list_train = pd.read_csv('../dataset/coupon_list_train.csv')
+coupon_detail_train = pd.read_csv("../../dataset/coupon_detail_train.csv")
+coupon_list_train = pd.read_csv('../../dataset/coupon_list_train.csv')
 user_list = pd.read_csv("../dataset/user_list.csv")
 
 
@@ -90,9 +90,7 @@ purchased_coupons_train = coupon_detail_train.merge(coupon_list_train,
                                                  on='COUPON_ID_hash',
                                                  how='inner')
 
-purchased_coupons_train = purchased_coupons_train.merge(user_list,
-                                                on='USER_ID_hash',
-                                                 how='inner')
 
-purchased_coupons_train.to_csv('../processed_data/train.csv')
+
+purchased_coupons_train.to_csv('../../Processed_data/train.csv')
 

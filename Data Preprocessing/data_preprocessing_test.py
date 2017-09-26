@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 
 # Reading the csv files for extracting features
-coupon_list_test = pd.read_csv('../dataset/coupon_list_test.csv')
+coupon_list_test = pd.read_csv('../../dataset/coupon_list_test.csv')
+user_list = pd.read_csv("../../dataset/user_list.csv")
 
 
 
@@ -55,5 +56,6 @@ coupon_list_test = coupon_list_test[['GENRE_NAME','PRICE_RATE','CATALOG_PRICE','
 # --------------------------------------------------------------------------------------------------------
 
 
-coupon_list_test.to_csv('../processed_data/test.csv')
+
+coupon_list_test.to_csv('../../Processed_data/test.csv')
 
