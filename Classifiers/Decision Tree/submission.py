@@ -13,7 +13,7 @@ user_list = temp_list
 j = 1 
 
 
-with open('submission.csv', 'wb') as f:
+with open('../../../Submission_Files/submission_Decision_Tree.csv', 'wb') as f:
 
 	writer = csv.writer(f)
 	writer.writerow(['USER_ID_hash','PURCHASED_COUPONS'])
