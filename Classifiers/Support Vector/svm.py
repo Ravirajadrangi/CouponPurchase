@@ -2,7 +2,9 @@ import numpy as np
 import pandas as pd
 from sklearn.svm import SVC
 import pickle
+import time
 
+start_time = time.time()
  
 # Reading of the training and testing dataset
 train_df = pd.read_csv('../../../processed_data/train.csv')
@@ -63,13 +65,16 @@ for name in genre_name:
 print 'altering of testing data done ...'	
 #---------------------------------------------------------------------------------------------------------
 
+X = X[:20000]
+Y = Y[:20000]
 
-SVM = SVC(gamma = 2, C=1)
+
+SVM = SVC()
 print "fitting the classifier"
 SVM.fit(X,Y)
 filename = 'svm.sav'
 pickle.dump(SVM, open(filename, 'wb'))
-
+print "Code Fininshed in: ",time.time()-start_time," secs"
 
 
 

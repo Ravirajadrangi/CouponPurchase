@@ -5,7 +5,7 @@ import csv
 probability_csv = pd.read_csv('probability.csv')
 print "Finished reading the csv file ..."
 coupon_list = list(probability_csv['Coupons'])
-print(coupon_list[0])
+
 
 temp_list = list(probability_csv)
 temp_list.pop(0)
@@ -22,7 +22,22 @@ with open('submission.csv', 'wb') as f:
 
 		print "Computing Sugggestions for User Index",j
 		j +=1  
-		main_list = list(probability_csv[users])  # list of probabilities of a user for different coupons
-		max_value = main_list.index(max(main_list)) 
-		writer.writerow([users,coupon_list[max_value]])
+
+		main_list = list(probability_csv[users]) 
+		temp_list = list(probability_csv[users]) 
+	 
+		temp_list.sort()
+		temp_list = temp_list[len(temp_list)-10:len(temp_list)]
+	
+		string = ""
+
+		for values in temp_list:	
+
+			if string == "":
+				string = coupon_list[main_list.index(values)] 
+			else:
+				string = string+" "+coupon_list[main_list.index(values)]
+			
+ 
+		writer.writerow([users,string])
 
