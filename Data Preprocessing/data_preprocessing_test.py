@@ -3,9 +3,6 @@ import numpy as np
 
 # Reading the csv files for extracting features
 coupon_list_test = pd.read_csv('../../dataset/coupon_list_test.csv')
-user_list = pd.read_csv("../../dataset/user_list.csv")
-
-
 
 # Altering Coupon List Test
 # --------------------------------------------------------------------------------------------------------

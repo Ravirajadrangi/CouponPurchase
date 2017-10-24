@@ -8,7 +8,7 @@ import csv
 # Reading of the training and testing dataset
 train_df = pd.read_csv('../../../processed_data/train.csv')
 train_df = train_df.drop(train_df.columns[0], axis=1)
-train_df = train_df.drop(['ITEM_COUNT','PURCHASEID_hash','COUPON_ID_hash'], axis = 1)       
+train_df = train_df.drop(['ITEM_COUNT','COUPON_ID_hash'], axis = 1)       
 test_df = pd.read_csv('../../../processed_data/test.csv')
 test_df = test_df.drop(test_df.columns[0], axis=1)
 Coupons = list(test_df['COUPON_ID_hash'])
@@ -47,18 +47,18 @@ for name in genre_name:
 #---------------------------------------------------------------------------------------------------------
 
 print 'Finished with altering dataset...'
-MN = pickle.load(open('../../../Trained_Classifiers/multinomial.sav', 'rb'))
+DT = pickle.load(open('../../../Trained_Classifiers/decision_tree.sav', 'rb'))
 print "Classifier loaded...."
 
 with open('probability.csv', 'wb') as f:    # created a csv file for storing the probability of a user buying the coupons
 	
 	writer = csv.writer(f)
 	
-	temp_list = list(MN.classes_) # the classes are the users 
+	temp_list = list(DT.classes_) # the classes are the users 
 	temp_list.insert(0,'Coupons')  # added the name "Coupons" to the list of classes so that we can make it as a header
 	writer.writerow(temp_list)    # writting the header
 	print 'Written the header...'
-	probability = MN.predict_proba(test_df)
+	probability = DT.predict_proba(test_df)
 	i = 0
 	for user_probability in probability:
 		user_probability = list(user_probability)

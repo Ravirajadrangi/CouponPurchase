@@ -20,9 +20,9 @@ print('COUPON_ID_hash: ',len(coupon_detail_train['COUPON_ID_hash'].dropna()))
 # --------------------------------------------------------------------------------------------------------
 
 
-# Altering Coupon List Train
+# Altering Coupon List Test
 # --------------------------------------------------------------------------------------------------------
-print('\n\n\nALTERING COUPON LIST TRAIN FILE --------------------------------')
+print('\n\n\nALTERING COUPON LIST TEST FILE --------------------------------')
 coupon_list_train = coupon_list_train[['GENRE_NAME','PRICE_RATE','CATALOG_PRICE','DISCOUNT_PRICE',
 										  'VALIDPERIOD','USABLE_DATE_MON', 'USABLE_DATE_TUE', 'USABLE_DATE_WED',
 										  'USABLE_DATE_THU','USABLE_DATE_FRI', 'USABLE_DATE_SAT', 'USABLE_DATE_SUN',
@@ -38,16 +38,7 @@ print('DISCOUNT_PRICE: ',len(coupon_list_train['DISCOUNT_PRICE'].dropna()))
 print('VALIDPERIOD: ',len(coupon_list_train['VALIDPERIOD'].dropna()))
 print('ken_name: ',len(coupon_list_train['ken_name'].dropna()))
 print('small_area_name: ',len(coupon_list_train['small_area_name'].dropna()))
-print('monday: ',len(coupon_list_train['USABLE_DATE_MON'].dropna()),'number on one and zero: ',list(coupon_list_train['USABLE_DATE_MON']).count(1),list(coupon_list_train['USABLE_DATE_MON']).count(0))
-print('tuesday: ',len(coupon_list_train['USABLE_DATE_TUE'].dropna()))
-print('wed: ',len(coupon_list_train['USABLE_DATE_WED'].dropna()))
-print('thu: ',len(coupon_list_train['USABLE_DATE_THU'].dropna()))
-print('fri: ',len(coupon_list_train['USABLE_DATE_FRI'].dropna()))
-print('sat: ',len(coupon_list_train['USABLE_DATE_SAT'].dropna()))
-print('sunday: ',len(coupon_list_train['USABLE_DATE_SUN'].dropna()))
-print('holiday: ',len(coupon_list_train['USABLE_DATE_HOLIDAY'].dropna()))
-print('before_holiday: ',len(coupon_list_train['USABLE_DATE_BEFORE_HOLIDAY'].dropna()))
-
+print('COUPON_ID_hash: ',len(coupon_list_train['COUPON_ID_hash'].dropna()))
 
 # Removing NAN values in dataframe
 coupon_list_train['USABLE_DATE_MON'] = coupon_list_train['USABLE_DATE_MON'].fillna(value=1)
@@ -122,10 +113,17 @@ print 'DUPLICATES REMOVED: ',len(combined_frames)
 print 'NEW HEADERS: ',list(combined_frames)
 
 
-print '\n\nCREATING CSV FILE'
-train_df = combined_frames.merge(coupon_list_train,on='COUPON_ID_hash',how='inner')
-print len(list(set(train_df['USER_ID_hash'])))
-train_df.to_csv('../../Processed_data/train.csv')
+user_list['merge'] = 1
+coupon_list_train['merge'] = 1
+test_df = pd.merge(user_list, coupon_list_train, on="merge")
+train_df.to_csv('../../Processed_data/tester.csv')
+
+
+#print '\n\nCREATING CSV FILE'
+#train_df = combined_frames.merge(coupon_list_train,on='COUPON_ID_hash',how='inner')
+#train_df = train_df.merge(user_list, on='USER_ID_hash', how = 'inner') 
+#print len(list(set(train_df['USER_ID_hash'])))
+#train_df.to_csv('../../Processed_data/train.csv')
 
 
 

@@ -1,8 +1,10 @@
 import numpy as np
 import pandas as pd
-from sklearn.naive_bayes import MultinomialNB
+from sklearn.naive_bayes import GaussianNB
 import pickle
-import csv
+import time
+
+start_time = time.time()
 
 
 # Reading of the training and testing dataset
@@ -11,7 +13,6 @@ train_df = train_df.drop(train_df.columns[0], axis=1)
 train_df = train_df.drop(['ITEM_COUNT','COUPON_ID_hash'], axis = 1)       
 test_df = pd.read_csv('../../../processed_data/test.csv')
 test_df = test_df.drop(test_df.columns[0], axis=1)
-Coupons = list(test_df['COUPON_ID_hash'])
 test_df = test_df.drop('COUPON_ID_hash', axis = 1)
 
 #---------------------------------------------------------------------------------------------------------
@@ -19,13 +20,30 @@ test_df = test_df.drop('COUPON_ID_hash', axis = 1)
 
 # Altering the large area name 
 large_area_name = list(set(train_df['large_area_name']))
+for area_name in large_area_name:
+	train_df = train_df.replace(to_replace = area_name, value = large_area_name.index(area_name))
+
 # Altering the small area name 
 small_area_name = list(set(train_df['small_area_name']))
-# Altering the ken area name 
+for area_name in small_area_name:
+	train_df = train_df.replace(to_replace = area_name, value = small_area_name.index(area_name))
+
+ # Altering the ken area name 
 ken_name = list(set(train_df['ken_name']))
+for area_name in ken_name:
+	train_df = train_df.replace(to_replace = area_name, value = ken_name.index(area_name))
+
+
 # Altering the genre name 
 genre_name = list(set(train_df['GENRE_NAME']))
+for name in genre_name:
+	train_df = train_df.replace(to_replace = name, value = genre_name.index(name))
 
+
+X = train_df.drop('USER_ID_hash', axis = 1)
+Y = train_df['USER_ID_hash']
+
+print 'altering of training data done ...'
 #---------------------------------------------------------------------------------------------------------
 # Altering the testing dataset
 
@@ -44,50 +62,25 @@ for area_name in ken_name:
 # Altering the genre name 
 for name in genre_name:
 	test_df = test_df.replace(to_replace = name, value = genre_name.index(name))
+
+print 'altering of testing data done ...'	
 #---------------------------------------------------------------------------------------------------------
 
-print 'Finished with altering dataset...'
-MN = pickle.load(open('../../../Trained_Classifiers/multinomial.sav', 'rb'))
-print "Classifier loaded...."
+
+GB = GaussianNB()
+print "fitting the classifier"
+GB.fit(X,Y)
+filename = '../../../Trained_Classifiers/gaussian.sav'
+pickle.dump(GB, open(filename, 'wb'))
 
 
 
-with open('probability.csv', 'wb') as f:    # created a csv file for storing the probability of a user buying the coupons
-	
-	writer = csv.writer(f)
-	
-	temp_list = list(MN.classes_) # the classes are the users 
-	temp_list.insert(0,'Coupons')  # added the name "Coupons" to the list of classes so that we can make it as a header
-	writer.writerow(temp_list)    # writting the header
-	print 'Written the header...'
-	probability = MN.predict_proba(test_df)
-
-
-	i = 0
-	for user_probability in probability:
-		user_probability = list(user_probability)
-		user_probability.insert(0,Coupons[i]) # list of coupon number with the corresponding user probability
-		writer.writerow(user_probability) 
-		print 'Finished writting the value for couponID: ',Coupons[i],', Coupon Index: ',i,' in File probability.csv'
-		i += 1
-
-
-'''
-
-    c1  c2  c3 
-u1  0.2 0.9 0.6 
-u2  0.3 0.4 0.2
-u3  0.4 0.8 0.2
-u4  0.6 0.9 0.2
-u5  0.7 0.8 0.3
+print 'Program Finished in: ',time.time() - start_time
 
 
 
-'''
-#      u1  u2  u3  u4  u5
-# c1   0.2 0.3 0.4 0.6 0.7
-# c2   0.9 0.4 0.8 0.9 0.8
-# c3   0.6 0.2 0.2 0.2 0.3
+
+
 
 
 '''
@@ -96,8 +89,7 @@ test_column = set(test_df.columns.tolist())
 print(train_column,test_column)
 
 # Saving the classifier
-filename = 'finalized_model.sav'
-pickle.dump(model, open(filename, 'wb'))
+
 
 # Loading the classifier
 loaded_model = pickle.load(open(filename, 'rb'))

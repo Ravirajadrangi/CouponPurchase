@@ -8,7 +8,7 @@ import csv
 # Reading of the training and testing dataset
 train_df = pd.read_csv('../../../processed_data/train.csv')
 train_df = train_df.drop(train_df.columns[0], axis=1)
-train_df = train_df.drop(['ITEM_COUNT','PURCHASEID_hash','COUPON_ID_hash'], axis = 1)       
+train_df = train_df.drop(['ITEM_COUNT','COUPON_ID_hash'], axis = 1)       
 test_df = pd.read_csv('../../../processed_data/test.csv')
 test_df = test_df.drop(test_df.columns[0], axis=1)
 Coupons = list(test_df['COUPON_ID_hash'])
